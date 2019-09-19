@@ -7,39 +7,119 @@
 
 ## Background
 
-https://github.com/geo-data/gdal-docker
+GDAL (http://www.gdal.org) is a very powerful library and command utility used to read, write, and transform raster and 
+vector geospatial data. GDAL's sister project, OGR, is a library and set of utilities that reads, writes, and transforms
+vector data. GDAL is an open source project released under the MIT license, allowing re-purposing for commercial use. As 
+such, GDAL is used in both open source and commercial projects (e.g., ESRI's suite) for handling raster data.
 
-https://gdal.org/programs/index.html#raster-programs
-gdalinfo
-gdal_calc
-gdal_compare
-gdal_warp
-gdal_merge
-gdal_rasterize
-gdal_transform
-ogrinfo
-ogr2ogr
-ogrmerge
+As an open source project with lots of configuration options, including the ability to link proprietary libraries for
+proprietary data formats, installation and configuration can be tricky so in this class we will use a docker container
+which has pre-installed the libraries we need. This simplifies use in that it will run the same on a mac, windows, or linux,
+but will require a bit more on the command line in order to access the right docker image, mount a volume, and of course 
+run the command.
 
-https://gdal.org/programs/ogrinfo.html
-## Prerequisites
-1) Docker is installed
+## Assignment: Part 1 (GDAL+docker)
+As you work through this assignment, compile your answers in a file named `answers.md` in a new branch on this repo named
+`solution`. When you have completed the assignment, submit a `Pull Request` to merge with `master`. _Do not merge the branch yourself._
 
-## Assignment
+I would like you to peruse the list of GDAL programs on https://gdal.org/programs/index.html#raster-programs as well 
+as the OGR programs on https://gdal.org/programs/ogrinfo.html/. Read the `Synopsis`, `Description`, and `Example` of each of 
+the programs in the lists. 
 
-### 1) Pull the gdal docker container.
+### 1. From the GDAL and OGR Programs, find 4 programs, describe them, and compare them with other tools that perform similar functions that you are already familiar with. Add this to `answers.md`
 
+Next, visit the docker hub page for `geo-data/gdal-docker` at https://github.com/geo-data/gdal-docker. As of September 16, 2019, the third Usage example was:
+```
+docker run -v $(pwd):/data geodata/gdal gdalinfo test.tif
+```
+Note that this mounts a volume on the container that is a directory on your local file system. Since a docker container 
+by default does not know about its host computer's disk resources, you need to explicitly `mount` a volume using the `-v` 
+flag. In this case, `$(pwd)` is the current directory. For a windows machine, you could replace this with `%cd%`, but it
+would be better in your case to explicitly list the directory where your files are. For example, you might use:
+```
+docker run -v G:\GIST604_Data:/data geodata/gdal gdalinfo test.tif
+```
+which would mount a directory from your windows G: drive as `/data` on the container, which is where the `GDAL` programs 
+will look for data.
 
+To test the docker container, [download this file](https://drive.google.com/open?id=0B-vzf2mGcaRzQlJ3cE9BSE1LNTQ), a shaded
+relief of Canyonlands. Move the file to your working directory, then open a Windows `cmd` window and navigate to the
+same directory.
 
-Run the gdal docker container to give yourself a quick test that you have a working container. The first time you
-run it, docker will need to download the layers it needs:
+Type:
+```
+docker run -v %cd%:/data geodata/gdal gdalinfo test.tif
+```
+You should see a lot of text like starting with ```Driver: GTiff/GeoTIFF
+Files: CANYrelief1-geo.tif```
+
+But if you get 
+```
+ERROR 4: CANYrelief1-geo.tif: No such file or directory
+gdalinfo failed - unable to open 'CANYrelief1-geo.tif'.
+``` 
+then either the volume wasn't mounted correctly or the filename is incorrect.
+
+### 2. Create a screenshot named `screenshot_canyon.png` of your `cmd` window after running `gdalinfo` on the shaded relief GeoTIFF
+
+## Assignment: Part 2 (GDAL Tutorial)
+Robert Simmon, an ex-NASA engineer and current Planeteer, wrote a great tutorial about getting started with some basic
+use cases of gdal. You are going to read Parts 1 and 2, following the samples, and producing some minor tweaks due
+to differences in your configuration (i.e., docker) and at my request.
+
+Read Part 1 of the tutorial:
+- [A Gentle Introduction to GDAL, Part 1](https://medium.com/planet-stories/a-gentle-introduction-to-gdal-part-1-a3253eb96082). 
+
+Read and follow the examples but skip `Installing GDAL` since we are using a docker container. Some additional changes need to be made anywhere the tutorial
+references a command. You will need to add the `docker run -v %cd%:/data geodata/gdal` preface like you did in the step above (substituting the above for whatever worked for you). For example:
 
 ```
-docker run geodata/gdal ogr2ogr --version
+gdalinfo CANYrelief1-geo.tif -mm
 ```
+would become
+```
+docker run -v %cd%:/data geodata/gdal gdalinfo CANYrelief1-geo.tif -mm
+```
+Follow the tutorial for Part 1, which will produce a lower resolution `jpeg` version of the Canyonlands shaded relief image.
 
+### 3. Add the `CANYrelief1.jpg` file you produced with `gdal_translate` to the `solution` branch.
 
-_Deliverable: Take a screenshot of your GeoServer Welcome screen showing the 19 Layers. Name it `screenshot.png` and add it to a new GitHub branch named `solution`. 
+Read Part 2 of the tutorial:
+- [A Gentle Introduction to GDAL, Part 2: Map Projections & gdalwarp](https://medium.com/planet-stories/a-gentle-introduction-to-gdal-part-2-map-projections-gdalwarp-e05173bd710a)
+
+For this assignment, follow the tutorial in part 2. When you have finished, revisit the last example and create a North Pole (Arctic) stereographic image. Name it `NE1_50M_SR_W_sh60_polarstereo_1400.png`
+
+### 4. Add the `NE1_50M_SR_W_sh60_polarstereo_1400.png` file to the `solution` branch.
+
+You are welcome to read Part 3 but it is not required for this assignment.
+
+## Assignment: Part 2 (OGR)
+
+Sara Safavi (Another Planeteer) wrote this great example tutorial for OGR: http://www.sarasafavi.com/intro-to-ogr-part-i-exploring-data.html. Follow the tutorial for Part I
+- [Intro to OGR, Part I: Exploring Data](http://www.sarasafavi.com/intro-to-ogr-part-i-exploring-data.html)
+
+### 5. Take a screenshot of the `ogrinfo` command with quiet output and name it `screenshot-ogrinfo-q.png`
+
+Follow the tutorial for Part 2 up to *Creating a KML*.
+- [Intro to OGR, Part II: Creating New Data](http://www.sarasafavi.com/intro-to-ogr-part-ii-creating-new-data.html)
+Instead of Creating a KML you are going to create a GeoJSON-formatted file and commit it to this repo. GitHub has a nice 
+feature of actually displaying GeoJSON files in an interactive map.
+
+At this step: 
+```
+ogr2ogr -f "KML" austinparks.kml new_layer.shp -dsco DescriptionField='ADDRESS'
+```
+Change `KML` to `GeoJSON` and set the output name to `austinparks.geojson`
+
+### 6. Use ogr2ogr to create `austinparks.geojson`
+
+### 6. 
+
+## Assignment Deliverables
+- File named `answers.md` containing short answers
+- Screenshot named `screenshot-docker-gdal.png`
+- `gdal_translate` output named `CANYrelief.jpg`
+- `gdalwarp/gdal_translate` output named `NE1_50M_SR_W_sh60_polarstereo_1400.png` of the North Pole
 
 ### 7. Turn in your work via GitHub Pull Request. 
 
