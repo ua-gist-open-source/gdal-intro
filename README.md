@@ -1,5 +1,5 @@
-# Assignment: Gdal Intro
-## Worth: 40 points
+# Assignment: GDAL and OGR Intro
+## Worth: 50 points
 ## Due: Monday, April 15, 11:59pm
 
 ## Objective: Use gdal to solve a number of geospatial problems
@@ -112,8 +112,6 @@ ogr2ogr -f "KML" austinparks.kml new_layer.shp -dsco DescriptionField='ADDRESS'
 Change `KML` to `GeoJSON` and set the output name to `austinparks.geojson`
 
 ### 6. Use ogr2ogr to create `austinparks.geojson`
-
-### 6. 
 
 ## Assignment Deliverables
 - File named `answers.md` containing short answers
