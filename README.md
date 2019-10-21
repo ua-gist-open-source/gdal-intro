@@ -18,7 +18,7 @@ which has pre-installed the libraries we need. This simplifies use in that it wi
 but will require a bit more on the command line in order to access the right docker image, mount a volume, and of course 
 run the command.
 
-## Assignment: Part 1 (GDAL+docker)
+## Assignment: Part 1 (GDAL)
 As you work through this assignment, compile your answers in a file named `answers.md` in a new branch on this repo named
 `solution`. When you have completed the assignment, submit a `Pull Request` to merge with `master`. _Do not merge the branch yourself._
 
@@ -28,37 +28,20 @@ the programs in the lists.
 
 ### 1. From the GDAL and OGR Programs, find 4 programs, describe them, and compare them with other tools that perform similar functions that you are already familiar with. Add this to `answers.md`
 
-Next, visit the docker hub page for `geo-data/gdal-docker` at https://github.com/geo-data/gdal-docker. As of September 16, 2019, the third Usage example was:
-```
-docker run -v $(pwd):/data geodata/gdal gdalinfo test.tif
-```
-Note that this mounts a volume on the container that is a directory on your local file system. Since a docker container 
-by default does not know about its host computer's disk resources, you need to explicitly `mount` a volume using the `-v` 
-flag. In this case, `$(pwd)` is the current directory. For a windows machine, you could replace this with `%cd%`, but it
-would be better in your case to explicitly list the directory where your files are. For example, you might use:
-```
-docker run -v G:\GIST604_Data:/data geodata/gdal gdalinfo test.tif
-```
-which would mount a directory from your windows G: drive as `/data` on the container, which is where the `GDAL` programs 
-will look for data.
-
-To test the docker container, [download this file](https://drive.google.com/open?id=0B-vzf2mGcaRzQlJ3cE9BSE1LNTQ), a shaded
+To test `gdal`, [download this file](https://drive.google.com/open?id=0B-vzf2mGcaRzQlJ3cE9BSE1LNTQ), a shaded
 relief of Canyonlands. Move the file to your working directory, then open a Windows `cmd` window and navigate to the
 same directory.
 
 Type:
 ```
-docker run -v %cd%:/data geodata/gdal gdalinfo test.tif
+gdal gdalinfo test.tif
 ```
-You should see a lot of text like starting with ```Driver: GTiff/GeoTIFF
+_Note: If you get something like `Command Not Found`, your environment may not have `gdal` in the `PATH`. If possible, add this directory to your path: `C:\osgeo4w64\bin` and try again. For this session only:_
+```
+SET PATH=%PATH%;C:\osgeo4w64\bin
+```
+After you run a successful `gdalinfo`, you should see a lot of text like starting with ```Driver: GTiff/GeoTIFF
 Files: CANYrelief1-geo.tif```
-
-But if you get 
-```
-ERROR 4: CANYrelief1-geo.tif: No such file or directory
-gdalinfo failed - unable to open 'CANYrelief1-geo.tif'.
-``` 
-then either the volume wasn't mounted correctly or the filename is incorrect.
 
 ### 2. Create a screenshot named `screenshot_canyon.png` of your `cmd` window after running `gdalinfo` on the shaded relief GeoTIFF
 
@@ -70,16 +53,8 @@ to differences in your configuration (i.e., docker) and at my request.
 Read Part 1 of the tutorial:
 - [A Gentle Introduction to GDAL, Part 1](https://medium.com/planet-stories/a-gentle-introduction-to-gdal-part-1-a3253eb96082). 
 
-Read and follow the examples but skip `Installing GDAL` since we are using a docker container. Some additional changes need to be made anywhere the tutorial
-references a command. You will need to add the `docker run -v %cd%:/data geodata/gdal` preface like you did in the step above (substituting the above for whatever worked for you). For example:
+Read and follow the examples but skip `Installing GDAL` since it is already installed for you.
 
-```
-gdalinfo CANYrelief1-geo.tif -mm
-```
-would become
-```
-docker run -v %cd%:/data geodata/gdal gdalinfo CANYrelief1-geo.tif -mm
-```
 Follow the tutorial for Part 1, which will produce a lower resolution `jpeg` version of the Canyonlands shaded relief image.
 
 ### 3. Add the `CANYrelief1.jpg` file you produced with `gdal_translate` to the `solution` branch.
