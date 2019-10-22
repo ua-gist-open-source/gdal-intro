@@ -83,19 +83,20 @@ Follow the tutorial for Part 2 up to *Creating a KML*.
 Instead of Creating a KML you are going to create a GeoJSON-formatted file and commit it to this repo. GitHub has a nice 
 feature of actually displaying GeoJSON files in an interactive map.
 
+### 6. Use ogr2ogr to create `austinparks.geojson`
+
 At this step: 
 ```
 ogr2ogr -f "KML" austinparks.kml new_layer.shp -dsco DescriptionField='ADDRESS'
 ```
 Change `KML` to `GeoJSON` and set the output name to `austinparks.geojson`
 
-### 6. Use ogr2ogr to create `austinparks.geojson`
-
 ## Assignment Deliverables
 - File named `answers.md` containing short answers
 - Screenshot named `screenshot-docker-gdal.png`
 - `gdal_translate` output named `CANYrelief.jpg`
 - `gdalwarp/gdal_translate` output named `NE1_50M_SR_W_sh60_polarstereo_1400.png` of the North Pole
+- `austinparks.geojson` - GeoJSON of Austin Parks
 
 ### 7. Turn in your work via GitHub Pull Request. 
 
