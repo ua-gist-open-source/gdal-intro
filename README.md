@@ -26,6 +26,9 @@ I would like you to peruse the list of GDAL programs on https://gdal.org/program
 as the OGR programs on https://gdal.org/programs/ogrinfo.html/. Read the `Synopsis`, `Description`, and `Example` of each of 
 the programs in the lists. 
 
+### 0. Update your Windows PATH
+gdal was installed in `C:\osgeo4w64` but windows will not know where these programs are unless we add them to our path. Follow [these instructions](http://www.kscodes.com/misc/how-to-set-path-in-windows-without-admin-rights/) to add `C:\OSGeo4W64\bin` to your `Path` Environment Variables.
+
 ### 1. From the GDAL and OGR Programs, find 4 programs, describe them, and compare them with other tools that perform similar functions that you are already familiar with. Add this to `answers.md`
 
 To test `gdal`, [download this file](https://drive.google.com/open?id=0B-vzf2mGcaRzQlJ3cE9BSE1LNTQ), a shaded
