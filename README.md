@@ -37,7 +37,7 @@ same directory.
 
 Type:
 ```
-gdal gdalinfo test.tif
+gdalinfo test.tif
 ```
 _Note: If you get something like `Command Not Found`, your environment may not have `gdal` in the `PATH`. If possible, add this directory to your path: `C:\osgeo4w64\bin` and try again. For this session only:_
 ```
