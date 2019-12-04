@@ -1,11 +1,7 @@
-# Assignment: GDAL and OGR Intro
-## Worth: 50 points
-## Due: Monday, April 15, 11:59pm
+# GDAL and OGR Intro
+## Assignment
 
-## Objective: Use gdal to solve a number of geospatial problems
-
-
-## Background
+### Background
 
 GDAL (http://www.gdal.org) is a very powerful library and command utility used to read, write, and transform raster and 
 vector geospatial data. GDAL's sister project, OGR, is a library and set of utilities that reads, writes, and transforms
@@ -18,6 +14,17 @@ which has pre-installed the libraries we need. This simplifies use in that it wi
 but will require a bit more on the command line in order to access the right docker image, mount a volume, and of course 
 run the command.
 
+Reference:
+- [GDAL Homepage](https://gdal.org/)
+- [GDAL Wikipedia](https://en.wikipedia.org/wiki/GDAL)
+
+## Deliverables
+- `answers-1.md` 
+- `quickstart-results-screenshot.png`
+- `answers-2.md`
+
+## Objective: Explore gdal and ogr tools
+
 ## Assignment: Part 1 (GDAL)
 As you work through this assignment, compile your answers in a file named `answers.md` in a new branch on this repo named
 `solution`. When you have completed the assignment, submit a `Pull Request` to merge with `master`. _Do not merge the branch yourself._
@@ -26,81 +33,68 @@ I would like you to peruse the list of GDAL programs on https://gdal.org/program
 as the OGR programs on https://gdal.org/programs/ogrinfo.html/. Read the `Synopsis`, `Description`, and `Example` of each of 
 the programs in the lists. 
 
-### 0. Update your Windows PATH
-gdal was installed in `C:\osgeo4w64` but windows will not know where these programs are unless we add them to our path. Follow [these instructions](http://www.kscodes.com/misc/how-to-set-path-in-windows-without-admin-rights/) to add `C:\OSGeo4W64\bin` to your `Path` Environment Variables.
-
-### 1. From the GDAL and OGR Programs, find 4 programs, describe them, and compare them with other tools that perform similar functions that you are already familiar with. Add this to `answers.md`
-
-To test `gdal`, [download this file](https://drive.google.com/open?id=0B-vzf2mGcaRzQlJ3cE9BSE1LNTQ), a shaded
-relief of Canyonlands. Move the file to your working directory, then open a Windows `cmd` window and navigate to the
-same directory.
-
-Type:
-```
-gdalinfo test.tif
-```
-_Note: If you get something like `Command Not Found`, your environment may not have `gdal` in the `PATH`. If possible, add this directory to your path: `C:\osgeo4w64\bin` and try again. For this session only:_
-```
-SET PATH=%PATH%;C:\osgeo4w64\bin
-```
-After you run a successful `gdalinfo`, you should see a lot of text like starting with ```Driver: GTiff/GeoTIFF
-Files: CANYrelief1-geo.tif```
-
-### 2. Create a screenshot named `screenshot_canyon.png` of your `cmd` window after running `gdalinfo` on the shaded relief GeoTIFF
+### 1. From the GDAL and OGR Program List, find 8 programs, describe them, and compare them with other tools that perform similar functions that you are already familiar with. Add this to `answers-1.md`
 
 ## Assignment: Part 2 (GDAL Tutorial)
-Robert Simmon, an ex-NASA engineer and current Planeteer, wrote a great tutorial about getting started with some basic
-use cases of gdal. You are going to read Parts 1 and 2, following the samples, and producing some minor tweaks due
-to differences in your configuration (i.e., docker) and at my request.
 
-Read Part 1 of the tutorial:
-- [A Gentle Introduction to GDAL, Part 1](https://medium.com/planet-stories/a-gentle-introduction-to-gdal-part-1-a3253eb96082). 
+### Download data
+We will use the Natural Earth Data for [1:50m Cross-blended Hypsometric Tints](https://www.naturalearthdata.com/downloads/50m-raster-data/50m-cross-blend-hypso/) with Water. It has also been uploaded to d2l. Download this data and extract to a working directory. Make note of this directory.
 
-Read and follow the examples but skip `Installing GDAL` since it is already installed for you.
+### Test `gdal`
+Open a command window (Windows users, use `cmd`, Mac/linux users use your favorite terminal application) and navigate to the directory where you have stored your unzipped Natural Earth data.
 
-Follow the tutorial for Part 1, which will produce a lower resolution `jpeg` version of the Canyonlands shaded relief image.
-
-### 3. Add the `CANYrelief1.jpg` file you produced with `gdal_translate` to the `solution` branch.
-
-Read Part 2 of the tutorial:
-- [A Gentle Introduction to GDAL, Part 2: Map Projections & gdalwarp](https://medium.com/planet-stories/a-gentle-introduction-to-gdal-part-2-map-projections-gdalwarp-e05173bd710a)
-
-For this assignment, follow the tutorial in part 2. When you have finished, revisit the last example and create a North Pole (Arctic) stereographic image. Name it `NE1_50M_SR_W_sh60_polarstereo_1400.png`
-
-### 4. Add the `NE1_50M_SR_W_sh60_polarstereo_1400.png` file to the `solution` branch.
-
-You are welcome to read Part 3 but it is not required for this assignment.
-
-## Assignment: Part 2 (OGR)
-
-Sara Safavi (Another Planeteer) wrote this great example tutorial for OGR: http://www.sarasafavi.com/intro-to-ogr-part-i-exploring-data.html. Follow the tutorial for Part I
-- [Intro to OGR, Part I: Exploring Data](http://www.sarasafavi.com/intro-to-ogr-part-i-exploring-data.html)
-
-### 5. Take a screenshot of the `ogrinfo` command with quiet output and name it `screenshot-ogrinfo-q.png`
-
-Follow the tutorial for Part 2 up to *Creating a KML*.
-- [Intro to OGR, Part II: Creating New Data](http://www.sarasafavi.com/intro-to-ogr-part-ii-creating-new-data.html)
-Instead of Creating a KML you are going to create a GeoJSON-formatted file and commit it to this repo. GitHub has a nice 
-feature of actually displaying GeoJSON files in an interactive map.
-
-### 6. Use ogr2ogr to create `austinparks.geojson`
-
-At this step: 
+Type `gdalinfo HYP_50M_SR_W.tif` at the prompt. If you have installed `gdal` successfully and are in the same directory as the data you will see output like this:
 ```
-ogr2ogr -f "KML" austinparks.kml new_layer.shp -dsco DescriptionField='ADDRESS'
+
+Driver: GTiff/GeoTIFF
+Files: HYP_50M_SR_W.tif
+Size is 10800, 5400
+Coordinate System is:
+GEOGCS["WGS 84",
+    DATUM["WGS_1984",
+        SPHEROID["WGS 84",6378137,298.257223563,
+            AUTHORITY["EPSG","7030"]],
+        AUTHORITY["EPSG","6326"]],
+    PRIMEM["Greenwich",0],
+    UNIT["degree",0.0174532925199433],
+    AUTHORITY["EPSG","4326"]]
+Origin = (-179.999999999999972,90.000000000000000)
+Pixel Size = (0.033333333333330,-0.033333333333330)
+Metadata:
+  AREA_OR_POINT=Area
+  TIFFTAG_DATETIME=2014:10:18 09:46:12
+  TIFFTAG_RESOLUTIONUNIT=2 (pixels/inch)
+  TIFFTAG_SOFTWARE=Adobe Photoshop CC 2014 (Macintosh)
+  TIFFTAG_XRESOLUTION=342.85699
+  TIFFTAG_YRESOLUTION=342.85699
+Image Structure Metadata:
+  INTERLEAVE=PIXEL
+Corner Coordinates:
+Upper Left  (-180.0000000,  90.0000000) (180d 0' 0.00"W, 90d 0' 0.00"N)
+Lower Left  (-180.0000000, -90.0000000) (180d 0' 0.00"W, 90d 0' 0.00"S)
+Upper Right ( 180.0000000,  90.0000000) (180d 0' 0.00"E, 90d 0' 0.00"N)
+Lower Right ( 180.0000000, -90.0000000) (180d 0' 0.00"E, 90d 0' 0.00"S)
+Center      (  -0.0000000,   0.0000000) (  0d 0' 0.00"W,  0d 0' 0.00"N)
+Band 1 Block=10800x1 Type=Byte, ColorInterp=Red
+Band 2 Block=10800x1 Type=Byte, ColorInterp=Green
+Band 3 Block=10800x1 Type=Byte, ColorInterp=Blue
+(base)
 ```
-Change `KML` to `GeoJSON` and set the output name to `austinparks.geojson`
 
-## Assignment Deliverables
-- File named `answers.md` containing short answers
-- Screenshot named `screenshot-docker-gdal.png`
-- `gdal_translate` output named `CANYrelief.jpg`
-- `gdalwarp/gdal_translate` output named `NE1_50M_SR_W_sh60_polarstereo_1400.png` of the North Pole
-- `austinparks.geojson` - GeoJSON of Austin Parks
+### Follow the QuickStart tutorial
+Follow the OSGeoLive QuickStart tutorial at https://live.osgeo.org/en/quickstart/gdal_quickstart.html using the Natural Earth Data.
 
-### 7. Turn in your work via GitHub Pull Request. 
+When you have completed the tutorial, obtain a screenshot of your directory listing. Windows users: use `dir`, Linux/Mac users use `ls -l`. Name the screenshot `quickstart-results-screenshot.png`
 
-Submit a *Pull request* to merge your `solution` branch with the `master` branch. _Do not merge it yourself_
+### Answer the following questions
+Answer the following questions and add them to `answers-2.md`:
 
-
-
+1) What command is used to reproject rasters?
+2) What command is used to create a JPEG from a tiff?
+3) What command is used to change the coordinates of a tiff without modifying the image?
+4) What command is used to display geospatial metadata of a raster file?
+5) What command lists the supported formats?
+6) What command is used to mosaic multiple rasters into one?
+7) What command is used to create tiles from a large raster?
+8) What command is used to transform between vector formats?
+9) What command is used to display metadata for a vector file?
