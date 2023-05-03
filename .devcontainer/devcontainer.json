@@ -1,6 +1,6 @@
 {
 	"name": "GDAL Intro",
-	"image": "mcr.microsoft.com/vscode/devcontainers/base:buster",
+	"dockerFile": "Dockerfile",
   
 	"customizations": {
 	  "vscode": {
@@ -9,5 +9,4 @@
 	  ]
 	  }
 	},
-	"postCreateCommand": "add-apt-repository -y ppa:ubuntugis/ubuntugis-unstable && apt-get update -y && apt-get install -y gdal-bin"
   }
