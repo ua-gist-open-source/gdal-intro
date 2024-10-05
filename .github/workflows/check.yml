@@ -1,0 +1,25 @@
+name: CI
+
+# Controls when the workflow will run
+on:
+  push:
+
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  check-outputs:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        filename: ["CANYrelief1.jpg", "NE1_50M_SR_W_tenth_mollweide_1400.png", "NE1_50M_SR_W_sh60_polarstereo_1400.png", "NE1_50M_SR_W_nh60_polarstereo_1400.png", "screencap_tiles.png", "canyonlands_terrain_1400.png", "canyonlands_watercolor_1400.png"]
+    steps:
+      - name: Check Screenshot
+        id: check_file
+        uses: andstor/file-existence-action@v1
+        with:
+          files: ${{ matrix.filename }}      
+      - name: Required files exist
+        if: steps.check_file.outputs.files_exists != 'true'
+        run: |
+          echo Required file, ${{ matrix.filename }} , is missing
+          exit 1

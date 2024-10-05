@@ -1,0 +1,12 @@
+{
+	"name": "GDAL Intro",
+	"dockerFile": "Dockerfile",
+  
+	"customizations": {
+	  "vscode": {
+		"extensions": [		
+			"analytic-signal.preview-tiff"			
+	  ]
+	  }
+	},
+  }
